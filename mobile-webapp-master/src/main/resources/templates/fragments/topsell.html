@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div th:fragment="topsell" class="card-group row">
+		<div class="col-lg-3 col-md-4 col-sm-6 mb-4"
+			th:each="prod : ${top4ProductMostSell}">
+			<div class="card h-100">
+				<div class="card-header">
+					<a th:href="@{/product/__${prod.id}__}"> <img
+						class="card-img-top" th:src="@{${prod.thumbnail}}"
+						th:alt="${prod.name}" th:title="${prod.name}">
+					</a>
+				</div>
+				<div class="card-body">
+					<h6 class="card-title">
+						<a th:href="@{/product/__${prod.id}__}" th:text="${prod.name}">Iphone
+							X</a>
+					</h6>
+					<div class="card-text">
+						<span class="badge badge-danger"
+							th:utext="|${#numbers.formatInteger(prod.price, 3, 'POINT')} <sup>đ</sup>|">1.000</span>
+						<div th:text="|Bảo hành: ${prod.warranty}|"></div>
+						<div class="text-secondary text-right pt-3"
+							th:text="|Lượt xem: ${prod.view}|"></div>
+					</div>
+				</div>
+				<div class="card-footer">
+					<a th:href="@{/product/__${prod.id}__}"
+						class="btn btn-primary btn-block view-detail-btn">Xem chi tiết</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

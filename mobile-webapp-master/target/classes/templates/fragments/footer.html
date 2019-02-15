@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://wwww.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<footer th:fragment="footer" class="sticky-bottom text-light bg-dark pt-2 pb-2 text-center"
+		th:with="date = ${#calendars.format(#calendars.createNow(), 'yyyy')}" >
+		Copyright &copy; [[${date}]] Anh Văn Mobile  </footer>
+		
+	
+</body>
+</html>

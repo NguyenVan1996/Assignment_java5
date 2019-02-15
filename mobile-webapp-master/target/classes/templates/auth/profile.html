@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html xmlns:th="http://wwww.thymeleaf.org" xmlns:layout=""
+	layout:decorate="~{layouts/user-layout}">
+<head>
+<title>Hồ sơ</title>
+<script th:src="@{/js/angular.js}"></script>
+</head>
+<body>
+	<div layout:fragment="content" data-ng-app="profileApp"
+		data-ng-controller="profileController">
+		<div class="container pt-5 pb-5">
+			<!-- List group -->
+			<div class="row">
+				<div class="col-sm-3">
+					<div class="list-group" id="myList" role="tablist">
+						<a class="list-group-item list-group-item-action"
+							data-toggle="list" href="#profile" role="tab">Thông tin cá
+							nhân</a> <a class="list-group-item list-group-item-action"
+							data-toggle="list" href="#change-password" role="tab">Đổi mật
+							khẩu</a> <a class="list-group-item list-group-item-action"
+							data-toggle="list" href="#order-history" role="tab"> Lịch sử
+							đơn hàng <span class="badge badge-danger badge-pill">{{totalOrder}}</span>
+						</a>
+					</div>
+				</div>
+				<div class="col-sm-9">
+					<!-- Tab panes -->
+					<div class="tab-content">
+						<div class="tab-pane" id="profile" role="tabpanel">
+							<nav aria-label="breadcrumb">
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item active">Thông tin cá nhân</li>
+								</ol>
+							</nav>
+
+							<table class="table table-sm table-bordered">
+								<tr>
+									<td>Họ và tên</td>
+									<td><input name="fullname" data-ng-model="user.fullname"
+										class="form-control form-control-sm" placeholder="Sửa tên">
+									</td>
+									<td style="width: 30px">
+										<button data-ng-click="changeFullname(user)"
+											class="btn btn-sm btn-warning">
+											<i class="fas fa-edit"></i>
+										</button>
+									</td>
+								</tr>
+								<tr>
+									<td>Tài khoản</td>
+									<td>{{user.username}}</td>
+									<td></td>
+								</tr>
+								<tr>
+									<td>Thư điện tử</td>
+									<td>{{user.email}}</td>
+									<td></td>
+								</tr>
+								<tr>
+									<td>Số điện thoại</td>
+									<td>{{user.phoneNumber}}</td>
+									<td></td>
+								</tr>
+								<tr>
+									<td>Địa chỉ</td>
+									<td><textarea rows="3"
+											class="form-control form-control-sm"
+											data-ng-model="user.address"></textarea></td>
+									<td style="width: 30px">
+										<button data-ng-click="changeAddress(user)"
+											class="btn btn-sm btn-warning">
+											<i class="fas fa-edit"></i>
+										</button>
+									</td>
+								</tr>
+								<tr>
+									<td>Giới tính</td>
+									<td><select data-ng-model="selectedGender"
+										data-ng-options="x.name for x in genders">
+									</select></td>
+									<td style="width: 30px">
+										<button data-ng-click="changeGender(selectedGender)"
+											class="btn btn-sm btn-warning">
+											<i class="fas fa-edit"></i>
+										</button>
+									</td>
+								</tr>
+								<tr>
+									<td>Ngày tham gia</td>
+									<td>{{user.createdTime | date: 'dd/MM/yyyy'}}</td>
+									<td></td>
+								</tr>
+							</table>
+						</div>
+
+						<div class="tab-pane" id="change-password" role="tabpanel">
+							<nav aria-label="breadcrumb">
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item active">Thay đổi mật khẩu</li>
+								</ol>
+							</nav>
+
+							<form name="chgPwdForm">
+								<div class="form-group">
+									<label>Mật khẩu hiện tại</label> <input type="password"
+										name="currentPassword" data-ng-model="currentPassword"
+										class="form-control form-control-sm" required>
+									<div
+										data-ng-show="chgPwdForm.currentPassword.$touched && 
+										chgPwdForm.currentPassword.$invalid">
+										<small class="text-danger">Vui lòng nhập mật khẩu hiện
+											tại</small>
+									</div>
+								</div>
+								<div class="form-group">
+									<label>Mật khẩu mới</label> <input type="password"
+										name="newPassword" data-ng-model="newPassword"
+										class="form-control form-control-sm" required>
+									<div
+										data-ng-show="chgPwdForm.newPassword.$touched && 
+										chgPwdForm.newPassword.$invalid">
+										<small class="text-danger">Vui lòng nhập mật khẩu hiện
+											mới</small>
+									</div>
+								</div>
+								<div class="form-group">
+									<label>Nhập lại mật khẩu mới</label> <input type="password"
+										name="confirmNewPassword" data-ng-model="confirmNewPassword"
+										class="form-control form-control-sm" required>
+									<div
+										data-ng-show="chgPwdForm.confirmNewPassword.$touched && 
+										chgPwdForm.confirmNewPassword.$invalid">
+										<small class="text-danger">Vui lòng xác nhận lại mật
+											khẩu mới</small>
+									</div>
+								</div>
+								<div class="form-group">
+									<button data-ng-click="changePassword()"
+										class="btn btn-primary">Đổi mật khẩu</button>
+								</div>
+							</form>
+
+						</div>
+
+						<div class="tab-pane" id="order-history" role="tabpanel">
+							<nav aria-label="breadcrumb">
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item active">Lịch sử đơn hàng</li>
+								</ol>
+							</nav>
+							<h3 data-ng-show="orders.length == 0">Bạn chưa đặt hàng lần
+								nào</h3>
+							<table data-ng-show="orders.length > 0"
+								class="table table-sm table-bordered">
+								<thead>
+									<tr>
+										<th>ID</th>
+										<th>Người nhận hàng</th>
+										<th>SĐT</th>
+										<th>Địa chỉ</th>
+										<th>Ngày đặt</th>
+										<th>Tổng tiền</th>
+										<th>Trạng thái</th>
+										<th>Chi tiết</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr data-ng-repeat="x in orders">
+										<td>{{x.id}}</td>
+										<td>{{x.customerName}}</td>
+										<td>{{x.phoneNumber}}</td>
+										<td>{{x.address}}</td>
+										<td>{{x.createdTime | date:'dd/MM/yyyy hh:mm:ss a'}}</td>
+										<td>{{x.amount | formatPrice }}</td>
+										<td>{{x.status}}</td>
+										<td>
+											<button data-ng-click="viewOrder(x.id)"
+												class="btn btn-sm btn-success">
+												<i class="far fa-eye"></i>
+											</button>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div th:replace="~{fragments/modals :: order-history}"></div>
+
+	</div>
+	<th:block layout:fragment="script">
+		<script th:src="@{/js/profile.js}"></script>
+	</th:block>
+</body>
+</html>

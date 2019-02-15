@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns:th="http://wwww.thymeleaf.org" xmlns:layout=""
+	layout:decorate="~{layouts/admin-layout}" xmlns:sec>
+<head>
+<script th:src="@{/js/angular.js}"></script>
+<title>Quản lý tài khoản</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="container pt-5 pb-5" data-ng-app="userApp"
+			data-ng-controller="userController">
+
+			<nav aria-label="breadcrumb">
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a th:href="@{/admin/users}">Quản
+							lý tài khoản</a></li>
+					<li class="breadcrumb-item active" aria-current="page">Danh
+						sách tài khoản</li>
+				</ol>
+			</nav>
+
+			<form th:action="@{/admin/users}" th:method="GET"
+				class="form-inline mb-2">
+				<input class="form-control mr-1" type="search" name="find"
+					aria-label="Search">
+				<button class="btn btn-success" type="submit">
+					<i class="fas fa-search"></i> Tìm
+				</button>
+			</form>
+
+			<div class="table-reponsive">
+				<table class="table table-sm table-bordered">
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>Tài khoản</th>
+							<th>Email</th>
+							<th>SĐT</th>
+							<th>Trạng thái</th>
+							<th width="100px">Hành động</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="user : ${users}">
+							<td th:text="${user.id}">ID</td>
+							<td th:text="${user.username}">Tài khoản</td>
+							<td th:text="${user.email}">Email</td>
+							<td th:text="${user.phoneNumber}">SĐT</td>
+							<td th:text="${user.enabled} ? 'Hoạt động' : 'Khóa'">Trạng
+								thái</td>
+							<td>
+								<button class="btn btn-sm btn-success"
+									th:data-ng-click="|viewUser(${user.id})|">
+									<i class="fas fa-eye"></i>
+								</button> <a th:href="@{/admin/user/__${user.id}__}"
+								class="btn btn-sm btn-warning" th:utext="#{icon.edit}">Sửa</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<nav th:if="${param.find==null}" aria-label="page"
+				th:remove="${#lists.size(pagination.controls)}<=1 ? 'ALL' ">
+				<ul class="pagination">
+					<li class="page-item"
+						th:each="control, controlStat: ${pagination.controls}"
+						th:classappend="${control.actived} ? 'active'"><a
+						class="page-link"
+						th:href="${control.page}==1 ? @{/admin/users} : 
+						@{/admin/users(page=__${control.page}__)}"
+						th:text="${control.label}">1</a></li>
+				</ul>
+			</nav>
+			<nav th:unless="${param.find==null}" aria-label="page"
+				th:remove="${#lists.size(pagination.controls)}<=1 ? 'ALL' ">
+				<ul class="pagination">
+					<li class="page-item"
+						th:each="control, controlStat: ${pagination.controls}"
+						th:classappend="${control.actived} ? 'active'"><a
+						class="page-link"
+						th:href="${control.page}==1 ? @{/admin/users} : 
+						@{/admin/users(find=${param.find}, page=__${control.page}__)}"
+						th:text="${control.label}">1</a></li>
+				</ul>
+			</nav>
+
+			<div class="modal fade" id="userModal" tabindex="-1" role="dialog"
+				aria-labelledby="userModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-lg" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="userModalLabel">Thông tin tài
+								khoản</h5>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<div class="form-group">
+								<label><strong>Họ và tên</strong></label>
+								<p>{{user.fullname}}</p>
+							</div>
+							<div class="form-group">
+								<label><strong>Tài khoản</strong></label>
+								<p>{{user.username}}</p>
+							</div>
+							<div class="form-group">
+								<label><strong>Email</strong></label>
+								<p>{{user.email}}</p>
+							</div>
+							<div class="form-group">
+								<label><strong>Address</strong></label>
+								<p>{{user.address}}</p>
+							</div>
+							<div class="form-group">
+								<label><strong>Phone Number</strong></label>
+								<p>{{user.phoneNumber}}</p>
+							</div>
+							<div class="form-group">
+								<label><strong>Gender</strong></label>
+								<p>{{user.gender}}</p>
+							</div>
+							<div class="form-group">
+								<label><strong>Quyền tài khoản</strong></label>
+								<ol>
+									<li data-ng-repeat="role in user.roles"><span>{{role.name}}</span>
+									</li>
+								</ol>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary"
+								data-dismiss="modal">Đóng</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<th:block layout:fragment="script">
+		<script>
+			var app = angular.module("userApp", []);
+			app.controller("userController", function($scope, $http) {
+				$scope.viewUser = function(uid) {
+					$http({
+						method : "GET",
+						url : "/admin/user/view/" + uid
+					}).then(function onSuccess(resp) {
+						$scope.user = resp.data;
+						$("#userModal").modal("show");
+					}, function onError(resp) {
+						alert("Lỗi server!");
+					});
+				}
+			});
+		</script>
+	</th:block>
+
+</body>
+</html>

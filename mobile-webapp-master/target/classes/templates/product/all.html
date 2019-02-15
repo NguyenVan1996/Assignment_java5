@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://wwww.thymeleaf.org" xmlns:layout=""
+	layout:decorate="~{layouts/user-layout}">
+<head>
+<meta charset="UTF-8">
+<title>Sản phẩm</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="container pt-5 pb-5">
+
+			<nav aria-label="breadcrumb">
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a th:href="@{/}">Trang chủ</a></li>
+					<li class="breadcrumb-item active" aria-current="page">Danh
+						sách sản phẩm</li>
+				</ol>
+			</nav>
+			
+			<div th:replace="~{fragments/brands :: navigator}"></div>
+
+			<div th:replace="~{fragments/products :: show-list}"></div>
+
+			<nav aria-label="page"
+				th:remove="${#lists.size(pagination.controls)}<=1 ? 'ALL' ">
+				<ul class="pagination">
+					<li class="page-item"
+						th:each="control, controlStat: ${pagination.controls}"
+						th:classappend="${control.actived} ? 'active'"><a
+						class="page-link"
+						th:href="${control.page}==1 ? @{/products} : @{/products(page=__${control.page}__)}"
+						th:text="${control.label}">1</a></li>
+				</ul>
+			</nav>
+
+		</div>
+	</div>
+</body>
+</html>

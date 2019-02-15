@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://wwww.thymeleaf.org" xmlns:layout=""
+	layout:decorate="~{layouts/admin-layout}">
+<head>
+<title>Trang tổng hợp</title>
+</head>
+<body>
+
+	<div layout:fragment="content">
+		<div class="container pt-5 pb-5">
+
+			<nav aria-label="breadcrumb">
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item active" aria-current="page">Tổng
+						hợp</li>
+				</ol>
+			</nav>
+
+			<div class="row">
+				<div class="col-sm-3">
+					<div class="card">
+						<div class="card-body">
+							<h5 class="card-title">Tổng số tài khoản</h5>
+							<h1 class="card-subtitle mb-2 text-muted">
+								<span th:text="${totalUser}"></span>
+							</h1>
+							<a th:href="@{/admin/users}" class="card-link">Chi tiết</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="card">
+						<div class="card-body">
+							<h5 class="card-title">Đơn hàng</h5>
+							<h1 class="card-subtitle mb-2 text-muted">
+								<span th:text="${totalOrder}"></span>
+							</h1>
+							<a th:href="@{/admin/orders}" class="card-link">Chi tiết</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="card">
+						<div class="card-body">
+							<h5 class="card-title">Sản phẩm</h5>
+							<h1 class="card-subtitle mb-2 text-muted">
+								<span th:text="${totalProduct}"></span>
+							</h1>
+							<a th:href="@{/admin/products}" class="card-link">Chi tiết</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="card">
+						<div class="card-body">
+							<h5 class="card-title">Thương hiệu</h5>
+							<h1 class="card-subtitle mb-2 text-muted">
+								<span th:text="${totalBrand}"></span>
+							</h1>
+							<a th:href="@{/admin/product/brands}" class="card-link">Chi
+								tiết</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

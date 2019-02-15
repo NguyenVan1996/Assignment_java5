@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://wwww.thymeleaf.org" xmlns:layout=""
+	layout:decorate="~{layouts/admin-layout}">
+<head>
+<title>Sửa thương hiệu</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="container pt-5 pb-5">
+
+			<nav aria-label="breadcrumb">
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a th:href="@{/admin/products}">Quản
+							lý sản phẩm</a></li>
+					<li class="breadcrumb-item"><a
+						th:href="@{/admin/product/brands}">Danh sách thương hiệu</a></li>
+					<li class="breadcrumb-item active" aria-current="page">Sửa
+						thương hiệu</li>
+				</ol>
+			</nav>
+
+			<form th:action="@{/admin/product/brand/__${brand.id}__}"
+				th:object="${brand}" th:method="POST" enctype="multipart/form-data">
+				<div class="form-group">
+					<div>
+						<strong>Tên thương hiệu</strong>
+					</div>
+					<input type="text" th:field="*{name}"
+						class="form-control form-control-sm"
+						th:classappend="${#fields.hasErrors('name')}? 'is-invalid'">
+					<div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
+						class="invalid-feedback">Lỗi</div>
+				</div>
+				<div class="form-group">
+					<div>
+						<strong>Logo</strong>
+					</div>
+					<div>
+						<img th:if="*{logo !=null}" th:src="*{logo}" width="100px">
+					</div>
+					<input type="file" name="image" size="2MB" accept="image/*"
+						placeholder="logo.png">
+				</div>
+				<div class="form-group">
+					<button class="btn btn-warning" th:utext="|#{icon.edit} Cập nhật|">Sửa</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://wwww.thymeleaf.org" xmlns:layout=""
+	layout:decorate="~{layouts/admin-layout}">
+<head>
+<title>Quản lý đơn hàng</title>
+</head>
+<body>
+
+	<div layout:fragment="content">
+		<div class="container pt-5 pb-5">
+
+			<nav aria-label="breadcrumb">
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a th:href="@{/admin/orders}">Quản
+							lý đơn hàng</a></li>
+					<li class="breadcrumb-item active" aria-current="page">Danh
+						sách đơn hàng</li>
+				</ol>
+			</nav>
+
+			<form th:action="@{/admin/orders}" th:method="GET"
+				class="form-inline mb-2">
+				<input class="form-control mr-1" type="search" name="find"
+					aria-label="Search">
+				<button class="btn btn-success" type="submit">
+					<i class="fas fa-search"></i> Tìm
+				</button>
+			</form>
+
+			<table class="table table-sm table-bordered">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Người nhận hàng</th>
+						<th>Số điện thoại</th>
+						<th>Địa chỉ giao giao hàng</th>
+						<th>Thời gian đặt hàng</th>
+						<th>Trạng thái</th>
+						<th>Hành động</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="order : ${orders}">
+						<td th:text="${order.id}"></td>
+						<td th:text="${order.customerName}">Người nhận hàng</td>
+						<td th:text="${order.phoneNumber}">Số điện thoại</td>
+						<td th:text="${order.address}">Địa chỉ giao giao hàng</td>
+						<td
+							th:text="${#dates.format(order.createdTime, 'dd/MM/yyyy hh:mm:ss aa')}">Thời
+							gian đặt hàng</td>
+						<td th:text="${order.status}">Trạng thái</td>
+						<td class="text-center"><a class="btn btn-sm btn-warning"
+							th:href="@{/admin/order/__${order.id}__}" th:utext="#{icon.edit}">Sửa</a>
+							<button th:data-id="${order.id}"
+								class="btn btn-sm btn-danger remove-btn"
+								th:utext="#{icon.remove}">Xóa</button></td>
+					</tr>
+				</tbody>
+			</table>
+
+			<nav th:if="${param.find==null}" aria-label="page"
+				th:remove="${#lists.size(pagination.controls)}<=1 ? 'ALL' ">
+				<ul class="pagination">
+					<li class="page-item"
+						th:each="control, controlStat: ${pagination.controls}"
+						th:classappend="${control.actived} ? 'active'"><a
+						class="page-link"
+						th:href="${control.page}==1 ? @{/admin/orders} : 
+						@{/admin/orders(page=__${control.page}__)}"
+						th:text="${control.label}">1</a></li>
+				</ul>
+			</nav>
+
+			<nav th:unless="${param.find==null}" aria-label="page"
+				th:remove="${#lists.size(pagination.controls)}<=1 ? 'ALL' ">
+				<ul class="pagination">
+					<li class="page-item"
+						th:each="control, controlStat: ${pagination.controls}"
+						th:classappend="${control.actived} ? 'active'"><a
+						class="page-link"
+						th:href="${control.page}==1 ? @{/admin/orders} : 
+						@{/admin/orders(find=${param.find}, page=__${control.page}__)}"
+						th:text="${control.label}">1</a></li>
+				</ul>
+			</nav>
+
+		</div>
+	</div>
+
+	<th:block layout:fragment="script">
+		<script th:src="@{/js/delete-order.js}"></script>
+	</th:block>
+
+</body>
+</html>

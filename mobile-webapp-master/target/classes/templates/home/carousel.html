@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div th:fragment="carousel" id="carouselProduct" class="carousel slide" data-ride="carousel">
+		<ol class="carousel-indicators">
+			<li data-target="#carouselProduct" th:data-slide-to="${i}"
+				th:class="${i==0}?'active'"
+				th:each="i : ${#numbers.sequence(0, #lists.size(lastestProduct) - 1)}"></li>
+		</ol>
+		<div class="carousel-inner">
+			<div class="carousel-item" th:each="prod : ${lastestProduct}"
+				th:classappend="${prodStat.first}?'active'">
+				<div class="row bg-secondary pt-5 pb-5">
+					<div class="col-5 col-sm-4 col-md-3">
+						<img class="d-block w-100" th:src="${prod.thumbnail}"
+							th:alt="${prod.name}" th:title="${prod.name}">
+					</div>
+					<div class="col-7 col-sm-8 col-md-9">
+						<h3 th:text="${prod.name}" class="text-light mr-4">...</h3>
+						<span class="badge badge-primary" th:text="${prod.brand}">Thương
+							hiệu</span>
+						<hr class="mr-4 bg-light">
+						<p th:text="${prod.shortDescription}" class="text-light mr-4">...</p>
+						<a th:href="@{/product/__${prod.id}__}" class="btn btn-success">Xem
+							chi tiết</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a class="carousel-control-prev" href="#carouselProduct" role="button"
+			data-slide="prev">
+			<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+			<span class="sr-only">Previous</span>
+		</a>
+		<a class="carousel-control-next" href="#carouselProduct" role="button"
+			data-slide="next">
+			<span class="carousel-control-next-icon" aria-hidden="true"></span>
+			<span class="sr-only">Next</span>
+		</a>
+	</div>
+</body>
+</html>

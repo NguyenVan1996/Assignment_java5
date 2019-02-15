@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://wwww.thymeleaf.org" xmlns:layout=""
+	layout:decorate="~{layouts/admin-layout}">
+<head>
+<title>Sửa thương hiệu</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="container pt-5 pb-5">
+
+			<nav aria-label="breadcrumb">
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a th:href="@{/admin/users}">Danh
+							sách tài khoản người dùng</a></li>
+					<li class="breadcrumb-item active" aria-current="page">Sửa
+						trạng thái tài khoản</li>
+				</ol>
+			</nav>
+
+			<form th:action="@{/admin/user/__${user.id}__}" th:object="${user}"
+				th:method="PUT">
+				<div class="form-group">
+					<div>
+						<strong>ID</strong>
+					</div>
+					<input class="form-control form-control-sm" readonly="readonly"
+						th:field="*{id}">
+				</div>
+
+				<div class="form-group">
+					<div>
+						<strong>Tài khoản</strong>
+					</div>
+					<input class="form-control form-control-sm" readonly="readonly"
+						th:field="*{username}">
+				</div>
+
+				<div class="form-group">
+					<div>
+						<strong>Email</strong>
+					</div>
+					<input class="form-control form-control-sm" readonly="readonly"
+						th:field="*{email}">
+				</div>
+
+				<div class="form-group">
+					<div>
+						<strong>Số điện thoại</strong>
+					</div>
+					<input class="form-control form-control-sm" readonly="readonly"
+						th:field="*{phoneNumber}">
+				</div>
+
+				<div class="form-group">
+					<div>
+						<strong>Trạng thái tài khoản</strong>
+					</div>
+					<select th:field="*{enabled}" class="form-control form-control-sm"
+						style="width: 200px">
+						<option th:value="true">Hoạt động</option>
+						<option th:value="false">Khóa</option>
+					</select>
+				</div>
+
+				<div class="form-group">
+					<button name="update" class="btn btn-warning"
+						th:utext="|#{icon.edit} Cập nhật|">Sửa</button>
+				</div>
+			</form>
+
+		</div>
+	</div>
+</body>
+</html>

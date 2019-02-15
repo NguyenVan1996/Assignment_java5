@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html xmlns:th="http://wwww.thymeleaf.org" xmlns:layout=""
+	layout:decorate="~{layouts/admin-layout}">
+<head>
+<title>Form</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="container pt-5 pb-5">
+
+			<nav aria-label="breadcrumb">
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a th:href="@{/admin/products}">Danh sách sản phẩm</a></li>
+					<li class="breadcrumb-item active" aria-current="page">Sửa sản
+						phẩm</li>
+				</ol>
+			</nav>
+
+			<form th:action="@{/admin/product/__${product.id}__}"
+				th:object="${product}" th:method="POST" enctype="multipart/form-data">
+				<div class="form-row">
+					<div class="form-group col-md-9">
+						<label for="inputProductName">Tên sản phẩm</label> <input
+							type="text" id="inputProductName" class="form-control"
+							placeholder="iPhone X 256GB" th:field="*{name}"
+							th:classappend="${#fields.hasErrors('name')}? 'is-invalid'">
+						<div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
+							class="invalid-feedback">Message</div>
+					</div>
+					<div class="form-group col-md-3">
+						<label for="selectBrand">Thương hiệu</label> <select
+							th:field="*{brand}" class="form-control" id="selectBrand">
+							<option th:each="b : ${brands}" th:value="${b.id}"
+								th:text="${b.name}"></option>
+						</select>
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="form-group col-md-4">
+						<label for="inputPrice">Giá</label> <input id="inputPrice"
+							type="number" min="0" max="1000000000" class="form-control"
+							placeholder="Đơn giá" th:field="*{price}"
+							th:classappend="${#fields.hasErrors('price')}? 'is-invalid'">
+						<div th:if="${#fields.hasErrors('price')}" th:errors="*{price}"
+							class="invalid-feedback">Message</div>
+					</div>
+					<div class="form-group col-md-3">
+						<label for="inputWarranty">Bảo hành</label> <input
+							id="inputWarranty" class="form-control" placeholder="12 tháng"
+							th:field="*{warranty}"
+							th:classappend="${#fields.hasErrors('warranty')}? 'is-invalid'">
+						<div th:if="${#fields.hasErrors('warranty')}"
+							th:errors="*{warranty}" class="invalid-feedback">Message</div>
+					</div>
+					<div class="form-group col-md-3">
+						<label for="inputUnit">Đơn vị tính</label> <input id="inputUnit"
+							type="text" class="form-control" placeholder="Đơn vị tính"
+							th:field="*{unit}"
+							th:classappend="${#fields.hasErrors('unit')}? 'is-invalid'">
+						<div th:if="${#fields.hasErrors('unit')}" th:errors="*{unit}"
+							class="invalid-feedback">Message</div>
+					</div>
+					<div class="form-group col-md-2">
+						<label for="inputQty">Số lượng</label> <input id="inputQty"
+							type="number" min="1" max="100" class="form-control"
+							placeholder="Số lượng" th:field="*{qtyInStock}"
+							th:classappend="${#fields.hasErrors('qtyInStock')}? 'is-invalid'">
+						<div th:if="${#fields.hasErrors('qtyInStock')}"
+							th:errors="*{qtyInStock}" class="invalid-feedback">Message</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="textareaShortDesc">Mô tả ngắn</label>
+					<textarea id="textareaShortDesc" rows="3" class="form-control"
+						placeholder="Mô tả ngắn" th:field="*{shortDescription}"
+						th:classappend="${#fields.hasErrors('shortDescription')}? 'is-invalid'"></textarea>
+					<div th:if="${#fields.hasErrors('shortDescription')}"
+						th:errors="*{shortDescription}" class="invalid-feedback">Message</div>
+				</div>
+
+				<div class="form-group">
+					<label for="image">Hình đại diện</label>
+					<div>
+						<img th:src="*{thumbnail}" style="width: 100px">
+					</div>
+					<div>
+						<input type="file" name="imageFile" size="2MB" accept="image/*">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="form-check">
+						<input class="form-check-input" type="checkbox" id="enabled"
+							th:field="*{enabled}"> <label class="form-check-label"
+							for="enabled"> Mở bán </label>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<table class="table table-sm table-bordered" id="table-spec">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>Thông số kỹ thuật</th>
+								<th style="width: 30px">
+									<button name="addSpecRow" class="btn btn-sm btn-success">
+										<i class="fas fa-plus"></i>
+									</button>
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:if="*{#lists.size(productSpecs)}>0"
+								th:each="prodSpec, prodSpecStat : *{productSpecs}">
+								<td th:text="${prodSpecStat.count}">1</td>
+								<td>
+									<div class="mb-2">
+										<input type="hidden"
+											th:field="*{productSpecs[__${prodSpecStat.index}__].id}">
+										<input type="hidden"
+											th:field="*{productSpecs[__${prodSpecStat.index}__].product}">
+										<select
+											th:field="*{productSpecs[__${prodSpecStat.index}__].specification}"
+											class="form-control">
+											<option th:each="spec : ${specifications}"
+												th:value="${spec.id}" th:text="${spec.name}">Màn
+												hình</option>
+										</select>
+									</div>
+
+									<div>
+										<table class="table">
+											<thead>
+												<tr>
+													<th>#</th>
+													<th>Tên</th>
+													<th>Giá trị</th>
+													<th style="width: 30px">
+														<button name="addSpecDetailRow"
+															th:value="${prodSpecStat.index}"
+															class="btn btn-sm btn-success">
+															<i class="fas fa-plus"></i>
+														</button>
+													</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="psd, psdStat : ${prodSpec.productSpecDetails}">
+													<td th:text="${psdStat.count}"></td>
+													<td><input type="hidden"
+														th:field="*{productSpecs[__${prodSpecStat.index}__].productSpecDetails[__${psdStat.index}__].productSpec}">
+														<input type="hidden"
+														th:field="*{productSpecs[__${prodSpecStat.index}__].productSpecDetails[__${psdStat.index}__].id}">
+														<input class="form-control form-control-sm"
+														th:field="*{productSpecs[__${prodSpecStat.index}__].productSpecDetails[__${psdStat.index}__].name}"
+														th:classappend="${#fields.hasErrors('productSpecs[__${prodSpecStat.index}__].productSpecDetails[__${psdStat.index}__].name')}? 'is-invalid'">
+														<div
+															th:if="${#fields.hasErrors('productSpecs[__${prodSpecStat.index}__].productSpecDetails[__${psdStat.index}__].name')}"
+															th:errors="*{productSpecs[__${prodSpecStat.index}__].productSpecDetails[__${psdStat.index}__].name}"
+															class="invalid-feedback">Message</div></td>
+													<td><input class="form-control form-control-sm"
+														th:field="*{productSpecs[__${prodSpecStat.index}__].productSpecDetails[__${psdStat.index}__].value}"
+														th:classappend="${#fields.hasErrors('productSpecs[__${prodSpecStat.index}__].productSpecDetails[__${psdStat.index}__].value')}? 'is-invalid'">
+														<div
+															th:if="${#fields.hasErrors('productSpecs[__${prodSpecStat.index}__].productSpecDetails[__${psdStat.index}__].value')}"
+															th:errors="*{productSpecs[__${prodSpecStat.index}__].productSpecDetails[__${psdStat.index}__].value}"
+															class="invalid-feedback">Message</div></td>
+													<td>
+														<button name="removeSpecDetailRow"
+															th:value="|${prodSpecStat.index},${psdStat.index}|"
+															class="btn btn-sm btn-danger remove-row-btn">
+															<i class="fas fa-minus"></i>
+														</button>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								<td>
+									<button name="removeSpecRow" th:value="${prodSpecStat.index}"
+										class="btn btn-sm btn-danger" title="Xóa dòng">
+										<i class="fas fa-minus"></i>
+									</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+				<div class="form-group">
+					<input type="hidden" th:field="*{thumbnail}"> <input
+						type="hidden" th:field="*{view}">
+					<button type="submit" name="update" class="btn btn-warning">
+						Cập nhật</button>
+				</div>
+
+
+			</form>
+		</div>
+	</div>
+</body>
+</html>

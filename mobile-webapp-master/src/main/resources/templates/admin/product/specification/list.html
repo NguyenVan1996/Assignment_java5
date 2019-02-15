@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://wwww.thymeleaf.org" xmlns:layout=""
+	layout:decorate="~{layouts/admin-layout}">
+<head>
+<title>Specification</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="container pt-5 pb-5">
+
+			<nav aria-label="breadcrumb">
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a th:href="@{/admin/products}">Quản
+							lý sản phẩm</a></li>
+					<li class="breadcrumb-item active" aria-current="page">Danh
+						sách thông số kỹ thuật</li>
+				</ol>
+			</nav>
+
+			<div class="clearfix">
+				<div class="float-left">
+					<a class="btn btn-primary mb-2"
+						th:href="@{/admin/product/specification}">Thêm thông số kỹ
+						thuật</a>
+				</div>
+
+				<form th:action="@{/admin/product/specifications}" th:method="GET"
+					class="form-inline mb-2 float-right">
+					<input class="form-control mr-1" type="search" name="find"
+						aria-label="Search">
+					<button class="btn btn-success" type="submit">
+						<i class="fas fa-search"></i> Tìm
+					</button>
+				</form>
+			</div>
+
+			<div class="table-reponsive">
+				<table class="table table-sm table-bordered">
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>Tên thông số kỹ thuật</th>
+							<th width="100px">Hành động</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="s : ${specifications}">
+							<td th:text="${s.id}"></td>
+							<td th:text="${s.name}"></td>
+							<td><a class="btn btn-sm btn-warning"
+								th:href="@{/admin/product/specification/__${s.id}__}"
+								th:utext="#{icon.edit}">Sửa</a>
+								<button th:data-id="${s.id}"
+									class="btn btn-sm btn-danger remove-btn"
+									th:utext="#{icon.remove}">Xóa</button></td>
+						</tr>
+					</tbody>
+				</table>
+
+				<nav th:if="${param.find==null}" aria-label="page"
+					th:remove="${#lists.size(pagination.controls)}<=1 ? 'ALL' ">
+					<ul class="pagination">
+						<li class="page-item"
+							th:each="control, controlStat: ${pagination.controls}"
+							th:classappend="${control.actived} ? 'active'"><a
+							class="page-link"
+							th:href="${control.page}==1 ? @{/admin/product/specifications} : 
+							@{/admin/product/specifications(page=__${control.page}__)}"
+							th:text="${control.label}">1</a></li>
+					</ul>
+				</nav>
+				
+				<nav th:unless="${param.find==null}" aria-label="page"
+					th:remove="${#lists.size(pagination.controls)}<=1 ? 'ALL' ">
+					<ul class="pagination">
+						<li class="page-item"
+							th:each="control, controlStat: ${pagination.controls}"
+							th:classappend="${control.actived} ? 'active'"><a
+							class="page-link"
+							th:href="${control.page}==1 ? @{/admin/product/specifications} : 
+							@{/admin/product/specifications(find=${param.find}, page=__${control.page}__)}"
+							th:text="${control.label}">1</a></li>
+					</ul>
+				</nav>
+				
+			</div>
+		</div>
+	</div>
+
+	<th:block layout:fragment="script">
+		<script th:src="@{/js/delete-specification.js}"></script>
+	</th:block>
+
+</body>
+</html>

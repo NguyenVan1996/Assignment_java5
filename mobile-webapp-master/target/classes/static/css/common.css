@@ -1,0 +1,28 @@
+@media screen and (max-width: 990px) {
+	.form-search-product {
+		margin: 10px 0 !important;
+	}
+}
+
+#cart {
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	z-index: 2;
+}
+
+html {
+	position: relative;
+	min-height: 100%;
+}
+
+footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	z-index: 1;
+}
+
+.logo-brand {
+	border: 1px solid black;
+}

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://wwww.thymeleaf.org" xmlns:layout=""
+	layout:decorate="~{layouts/user-layout}">
+<head>
+<title>Đặt hàng</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="container pt-5 pb-5">
+			<h1>Đặt hàng</h1>
+			<hr>
+
+			<div class="table-responsive">
+				<table th:unless="${session.cart}==null"
+					class="table table-sm table-bordered">
+					<tr>
+						<th>Hình ảnh</th>
+						<th>Tên SP</th>
+						<th>Số lượng</th>
+						<th>Đơn giá</th>
+						<th>Thành tiền</th>
+					</tr>
+					<tr th:each="item : ${session.cart}" th:object="${item.value}">
+						<td class="text-center"><img
+							th:src="${item.value.product.thumbnail}" width="60px"></td>
+						<td th:text="*{product.name}"></td>
+						<td th:text="*{quantity}"></td>
+						<td
+							th:text="${#numbers.formatInteger(__*{product.price}__, 3, 'POINT')}"></td>
+						<td th:text="${#numbers.formatInteger(__*{amount}__, 3, 'POINT')}"></td>
+					</tr>
+					<tr>
+						<td colspan="4" class="text-right">Tổng tiền</td>
+						<td
+							th:text="${#numbers.formatInteger(session.cart.amount, 3, 'POINT')}">1000</td>
+					</tr>
+					<tr>
+						<td><a th:href="@{/products}"
+							class="btn btn-sm btn-success btn-block">Tiếp tục mua hàng</a></td>
+						<td colspan="4"></td>
+					</tr>
+				</table>
+			</div>
+
+			<h3>Thông tin liên hệ</h3>
+			<form th:action="@{/order}" method="post" th:object="${order}">
+				<div class="form-group row">
+					<label class="col-sm-2 col-form-label col-form-label-sm">Người
+						nhận hàng (<span class="text-danger">*</span>)
+					</label>
+					<div class="col-sm-4">
+						<input class="form-control form-control-sm"
+							th:field="*{customerName}"
+							th:classappend="${#fields.hasErrors('customerName')}? 'is-invalid'">
+						<div th:if="${#fields.hasErrors('customerName')}"
+							th:errors="*{customerName}" class="invalid-feedback">Message</div>
+					</div>
+				</div>
+
+				<div class="form-group row">
+					<label class="col-sm-2 col-form-label col-form-label-sm">Điện
+						thoại liên hệ (<span class="text-danger">*</span>)
+					</label>
+					<div class="col-sm-4">
+						<input class="form-control form-control-sm"
+							th:field="*{phoneNumber}"
+							th:classappend="${#fields.hasErrors('phoneNumber')}? 'is-invalid'">
+						<div th:if="${#fields.hasErrors('phoneNumber')}"
+							th:errors="*{phoneNumber}" class="invalid-feedback">Message</div>
+					</div>
+				</div>
+
+				<div class="form-group row">
+					<label class="col-sm-2 col-form-label col-form-label-sm">Địa
+						chỉ nhận hàng (<span class="text-danger">*</span>)
+					</label>
+					<div class="col-sm-4">
+						<textarea cols="5" class="form-control form-control-sm"
+							th:field="*{address}"
+							th:classappend="${#fields.hasErrors('address')}? 'is-invalid'"></textarea>
+
+						<div th:if="${#fields.hasErrors('address')}"
+							th:errors="*{address}" class="invalid-feedback">Message</div>
+					</div>
+				</div>
+
+				<div class="form-group row">
+					<label class="col-sm-2 col-form-label col-form-label-sm"></label>
+					<div class="col-sm-4">
+						<button class="btn btn-sm btn-primary">Đặt hàng</button>
+					</div>
+				</div>
+
+			</form>
+		</div>
+	</div>
+</body>
+</html>

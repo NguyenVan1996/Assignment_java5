@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://wwww.thymeleaf.org" xmlns:layout=""
+	layout:decorate="~{layouts/admin-layout}">
+<head>
+<title>Trang tổng hợp</title>
+</head>
+<body>
+
+	<div layout:fragment="content">
+		<div class="container pt-5 pb-5">
+
+			<nav aria-label="breadcrumb">
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a th:href="@{/admin/orders}">Quản
+							lý đơn hàng</a></li>
+					<li class="breadcrumb-item active" aria-current="page">Chi
+						tiết đơn hàng</li>
+				</ol>
+			</nav>
+
+			<form th:action="@{/admin/order/__${order.id}__}"
+				th:object="${order}" th:method="PUT">
+				<div class="form-group">
+					<label><strong>Người nhận hàng</strong></label> <input type="text"
+						th:field="*{customerName}" class="form-control form-control-sm">
+				</div>
+				<div class="form-group">
+					<label><strong>Điện thoại liên hệ</strong></label> <input
+						type="text" th:field="*{phoneNumber}"
+						class="form-control form-control-sm">
+				</div>
+				<div class="form-group">
+					<label><strong>Địa chỉ nhận hàng</strong></label>
+					<textarea rows="3" th:field="*{address}"
+						class="form-control form-control-sm"></textarea>
+				</div>
+
+				<div class="form-group">
+					<label><strong>Đơn hàng bao gồm</strong></label>
+					<table class="table table-sm table-bordered">
+						<tr>
+							<th>#</th>
+							<th>Tên sản phẩm</th>
+							<th>Đơn giá</th>
+							<th>Số lượng</th>
+							<th>Thành tiền</th>
+							<th>Tồn kho</th>
+						</tr>
+						<tr th:each="line : *{orderLines}">
+							<td th:text="${lineStat.count}"></td>
+							<td th:text="${line.product.name}"></td>
+							<td
+								th:text="${#numbers.formatInteger(line.product.price, 3, 'POINT')}"></td>
+							<td th:text="${line.quantity}"></td>
+							<td
+								th:text="${#numbers.formatInteger(line.quantity * line.product.price, 3, 'POINT')}"></td>
+							<td th:text="${line.product.qtyInStock}"></td>
+						</tr>
+						<tr>
+							<td colspan="4" class="text-right"><strong>Tổng cộng</strong></td>
+							<td th:text="*{#numbers.formatInteger(amount, 3, 'POINT')}"></td>
+							<td></td>
+						</tr>
+					</table>
+				</div>
+
+				<div class="form-group">
+					<label><strong>Trạng thái đơn hàng</strong></label> <select
+						th:field="*{status}" class="form-control form-control-sm"
+						style="width: 200px">
+						<option th:each="os : ${statuses}" th:value="${os.id}"
+							th:text="${os.name}">Chờ xác nhận</option>
+					</select>
+				</div>
+
+				<div class="form-group">
+					<input type="hidden" th:field="*{amount}"> <input
+						type="hidden" th:field="*{user}">
+					<button class="btn btn-warning" name="update"
+						th:utext="|#{icon.edit} Sửa đơn hàng|"></button>
+				</div>
+
+			</form>
+		</div>
+	</div>
+
+</body>
+</html>

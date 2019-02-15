@@ -1,0 +1,68 @@
+
+<!DOCTYPE html>
+
+<html xmlns:th="http://wwww.thymeleaf.org">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- font-awesome -->
+<link rel="stylesheet" th:href="@{/css/font-awesome.min.css}" />
+
+<!-- css bootstrap core -->
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+
+<link rel="stylesheet" th:href="@{/css/login.css}" />
+
+<title th:text="#{label.title}"></title>
+</head>
+<body>
+	<!-- navbar -->
+	<nav th:replace="fragments/navbar :: user"></nav>
+	<div class="container centered">
+		<form th:action="@{/login}" method="post">
+			<h1 class="pb-3" th:text="#{label.singin}"></h1>
+
+			<div th:if="${loginError}" class="alert alert-danger" role="alert">Tài
+				khoản hoặc mật khẩu không chính xác!</div>
+
+			<div class="form-group">
+				<p th:text="#{label.userName}"></p>
+				<input id="username" name="username"
+					class="form-control form-control-sm" autofocus="autofocus">
+			</div>
+
+			<div class="form-group">
+				<label for="password" th:text="#{label.password}"></label> <input type="password"
+					id="password" name="password" class="form-control form-control-sm">
+			</div>
+
+			<div class="form-group">
+				<input id="rememberMe" type="checkbox" name="remember-me"> <label
+					for="rememberMe" th:text="#{label.remember}"></label>
+			</div>
+
+			<p th:text="#{label.language}"></p>: <a th:href="@{/login?lang=en}">English</a> | <a
+				th:href="@{/login?lang=vi}">Việt Nam</a> <br>
+
+			<div class="form-group">
+				<button class="btn btn-primary" th:text="#{label.submit}"></button>
+			</div>
+
+			<div class="form-group mt-2">
+				<span th:text="#{label.noaccount}"> 
+				</span>
+				<a
+					href="/register">click</a> vào đây.
+			</div>
+		</form>
+	</div>
+
+	<!-- script core jQuery, popper, bootstrap -->
+	<script th:src="@{/js/jquery.min.js}"></script>
+	<script th:src="@{/js/popper.min.js}"></script>
+	<script th:src="@{/js/bootstrap.min.js}"></script>
+</body>
+</html>

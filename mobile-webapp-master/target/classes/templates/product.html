@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://wwww.thymeleaf.org" xmlns:layout=""
+	layout:decorate="~{layouts/user-layout}">
+<head>
+<title>REST Thông số kỹ thuật</title>
+<script th:src="@{/js/angular.js}"></script>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div data-ng-app="productApplication"
+			data-ng-controller="productController" class="container pt-5 pb-5">
+			<nav aria-label="breadcrumb">
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item active">REST Product</li>
+				</ol>
+			</nav>
+
+
+			<button class="btn btn-sm btn-primary mb-2"
+				data-ng-click="createProduct()">Create Product</button>
+
+			<table class="table table-sm">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Name</th>
+						<th>Price</th>
+						<th>InStock</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr data-ng-repeat="p in products">
+						<td data-ng-bind="p.id">ID</td>
+						<td data-ng-bind="p.name">Name</td>
+						<td data-ng-bind="p.price">Price</td>
+						<td data-ng-bind="p.qtyInStock">InStock</td>
+						<td>
+							<button class="btn btn-sm btn-warning">Edit</button>
+							<button class="btn btn-sm btn-danger">Delete</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<div class="modal fade" id="specificationModal" tabindex="-1"
+				role="dialog" aria-labelledby="specificationModalLabel"
+				aria-hidden="true">
+				<div class="modal-dialog modal-lg" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" data-ng-bind="modalTitle">Title</h5>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<div class="form-group">
+										
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary"
+								data-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-primary"
+								data-ng-click="saveSpecification(specification)">Save</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+	<th:block layout:fragment="script">
+		<script>
+			var app = angular.module("productApplication", []);
+			app.controller("productController", function($scope, $http) {
+
+				// Danh sach san pham
+				$http.get("/rest/products").then(function(response) {
+					$scope.products = response.data;
+				});
+
+				$scope.createProduct = function() {
+					$("#specificationModal").modal("show");
+				}
+			});
+		</script>
+	</th:block>
+</body>
+</html>

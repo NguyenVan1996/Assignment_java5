@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://wwww.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div th:fragment="cart" id="cart">
+		<a th:href="@{/cart/show}" class="btn btn-danger" id="cart-btn">
+			<i class="fas fa-shopping-cart"></i>
+			<span class="badge badge-light" id="cart-qty"
+				th:text="${session.cart}!=null ? ${session.cart.quantity} : 0">0</span>
+		</a>
+	</div>
+</body>
+</html>

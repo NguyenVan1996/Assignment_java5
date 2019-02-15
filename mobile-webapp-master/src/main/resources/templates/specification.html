@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://wwww.thymeleaf.org" xmlns:layout=""
+	layout:decorate="~{layouts/user-layout}">
+<head>
+<title>REST Thông số kỹ thuật</title>
+<script th:src="@{/js/angular.js}"></script>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div data-ng-app="specificationApp"
+			data-ng-controller="specificationController"
+			class="container pt-5 pb-5">
+			<nav aria-label="breadcrumb">
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item active">REST Thông số kỹ thuật</li>
+				</ol>
+			</nav>
+
+			<button type="button" data-ng-click="addSpecification()"
+				class="btn btn-sm btn-primary mb-2">Add specification</button>
+
+			<table class="table table-sm table-bordered">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Name</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr data-ng-repeat="x in specifications | orderBy:'id'">
+						<td data-ng-bind="x.id"></td>
+						<td data-ng-bind="x.name"></td>
+						<td><button type="button"
+								data-ng-click="editSpecification(x)">Edit</button></td>
+					</tr>
+				</tbody>
+			</table>
+
+
+			<div class="modal fade" id="specificationModal" tabindex="-1"
+				role="dialog" aria-labelledby="specificationModalLabel"
+				aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" data-ng-bind="modalTitle">Title</h5>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<form>
+								<div class="form-group">
+									<label>Tên thông số</label> <input
+										class="form-control form-control-sm"
+										data-ng-model="specification.name">
+								</div>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary"
+								data-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-primary"
+								data-ng-click="saveSpecification(specification)">Save</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+	<th:block layout:fragment="script">
+		<script>
+			var app = angular.module("specificationApp", []);
+			app.controller("specificationController", function($scope, $http) {
+
+				$http.get("/rest/specifications").then(function(response) {
+					$scope.specifications = response.data;
+				});
+
+				$scope.clearForm = function() {
+					$scope.specification = null;
+				}
+
+				$scope.addSpecification = function() {
+					$scope.action = "add";
+					$scope.modalTitle = "Thêm";
+					$scope.clearForm();
+					$("#specificationModal").modal("show");
+
+				}
+				$scope.editSpecification = function(x) {
+					$scope.action = "edit";
+					$scope.modalTitle = "Sửa";
+					$scope.specification = x;
+					$("#specificationModal").modal("show");
+				}
+
+				$scope.saveSpecification = function(x) {
+					if ($scope.action == "add") {
+						$http({
+							method : "POST",
+							url : "/rest/specification",
+							data : angular.toJson($scope.specification)
+						}).then(function mySuccess(response) {
+							$scope.specifications.push(response.data);
+							$("#specificationModal").modal("hide");
+						}, function myError(response) {
+							alert(response.statusText);
+						});
+					} else if ($scope.action == "edit") {
+						$http({
+							method : "PUT",
+							url : "/rest/specification/" + x.id,
+							data : angular.toJson($scope.specification)
+						}).then(function mySuccess(response) {
+							$("#specificationModal").modal("hide");
+						}, function myError(response) {
+							alert(response.statusText);
+						});
+					}
+				}
+			});
+		</script>
+	</th:block>
+</body>
+</html>

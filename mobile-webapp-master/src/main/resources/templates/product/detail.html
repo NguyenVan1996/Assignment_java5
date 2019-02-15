@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout=""
+	layout:decorate="~{layouts/user-layout}">
+<head>
+<meta charset="UTF-8">
+<title>Thông tin sản phẩm</title>
+</head>
+<body>
+	<div layout:fragment="content">
+
+		<div class="container pt-5 pb-5">
+
+			<nav aria-label="breadcrumb">
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a th:href="@{/products}">Sản
+							phẩm</a></li>
+					<li class="breadcrumb-item active" aria-current="page">Chi
+						tiết sản phẩm</li>
+				</ol>
+			</nav>
+
+			<div class="row">
+
+				<div class="col-md-4">
+					<div>
+						<img th:src="@{${product.thumbnail}}" width="100%" />
+					</div>
+				</div>
+
+				<div class="col-md-8">
+					<h2 th:text="${product.name}">Product name</h2>
+					<span class="badge badge-primary"
+						th:text="|Thương hiệu: ${product.brand.name}|">Thương hiệu</span>
+					<span class="badge badge-success"
+						th:text="|Bảo hành: ${product.warranty}|">Thương hiệu</span>
+					<div class="dropdown-divider"></div>
+
+					<p class="mt-2 text-warning"
+						style="font-weight: bold; font-size: 1.3em"
+						th:utext="|${#numbers.formatInteger(product.price,3, 'POINT')} <sup>đ</sup>|">1.000</p>
+
+					<p th:text="${product.shortDescription}"></p>
+
+					<p class="text-secondary" th:text="|Lượt xem: ${product.view}|"></p>
+
+					<button class="btn btn-success" id="add-to-cart-btn"
+						th:data-product-id="${product.id}"><i class="fas fa-shopping-cart"></i> Cho vào giỏ</button>
+				</div>
+			</div>
+
+
+			<div class="pt-5"></div>
+
+			<nav aria-label="breadcrumb">
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a th:href="@{/products}">Sản
+							phẩm</a></li>
+					<li class="breadcrumb-item" aria-current="page">Chi
+						tiết sản phẩm</li>
+					<li class="breadcrumb-item active" aria-current="page">Thông số kỹ thuật</li>
+				</ol>
+			</nav>
+
+			<div class="row">
+				<div class="container-fluid">
+					<div th:each="spec : ${product.productSpecs}">
+						<div class="font-weight-bold border-bottom pt-3">[[${spec.specification.name}]]</div>
+						<div th:each="specDetail : ${spec.productSpecDetails}"
+							class="border-bottom" style="list-style-type: none">
+							<div class="row" th:classappend="${specDetailStat.even}?''">
+								<div class="col-3" th:text="${specDetail.name}"></div>
+								<div class="col-9" th:text="${specDetail.value}"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</body>
+</html>

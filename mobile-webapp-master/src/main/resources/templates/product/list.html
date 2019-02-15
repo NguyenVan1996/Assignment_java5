@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://wwww.thymeleaf.org" xmlns:layout=""
+	layout:decorate="~{layouts/user-layout}">
+<head>
+<meta charset="UTF-8">
+<title>Sản phẩm</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="container pt-5 pb-5">
+			<h1>Danh sách sản phẩm</h1>
+			<hr>
+			<div class="card-group row">
+				<div class="col-lg-3 col-md-4 col-sm-6 mb-4"
+					th:each="prod : ${products}">
+					<div class="card h-100">
+						<div class="card-header">
+							<img class="card-img-top" th:src="@{${prod.thumbnail}}"
+								th:alt="${prod.name}" th:title="${prod.name}">
+						</div>
+						<div class="card-body">
+							<h5 class="card-title" th:text="${prod.name}">Iphone X</h5>
+							<p class="card-text">
+								<span class="badge badge-danger"
+									th:utext="${#numbers.formatInteger(prod.price, 3, 'POINT')} + ' <sup>đ</sup>'">1.000</span>
+							</p>
+							<p class="card-text text-justify"
+								th:text="${prod.shortDescription}">iPhone X mang trên mình
+								thiết kế hoàn toàn mới với màn hình Super Retina viền cực mỏng
+								và trang bị nhiều công nghệ hiện đại như nhận diện khuôn mặt
+								Face ID, sạc pin nhanh và sạc không dây cùng khả năng chống nước
+								bụi cao cấp.</p>
+						</div>
+						<div class="card-footer">
+							<a th:href="@{/product/__${prod.id}__}"
+								class="btn btn-primary btn-block view-detail-btn">Xem chi
+								tiết</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<nav aria-label="page"
+				th:remove="${#lists.size(pagination.controls)}<=1 ? 'all' ">
+				<ul class="pagination">
+					<li class="page-item"
+						th:each="control, controlStat: ${pagination.controls}"
+						th:classappend="${control.actived} ? 'active'"><a
+						class="page-link"
+						th:href="${control.page}==1 ? @{/products} : @{/products(page=__${control.page}__)}"
+						th:text="${control.label}">1</a></li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://wwww.thymeleaf.org">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- font-awesome -->
+<link rel="stylesheet" th:href="@{/css/font-awesome.min.css}" />
+
+<!-- css bootstrap core -->
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+
+<link rel="stylesheet" th:href="@{/css/register.css}" />
+
+<title>Đăng ký tài khoản</title>
+</head>
+<body>
+	<!-- navbar -->
+	<nav th:replace="fragments/navbar :: user"></nav>
+	<div class="container centered">
+
+		<form th:action="@{/register}" method="POST" th:object="${register}">
+			<h1 class="pb-3">Đăng ký tài khoản</h1>
+
+
+			<div class="form-group row">
+				<label th:for="${#ids.next('fullname')}"
+					class="col-sm-3 col-form-label col-form-label-sm">Họ và tên
+					(<span class="text-danger">*</span>)
+				</label>
+				<div class="col-sm-9">
+					<input class="form-control form-control-sm" th:field="*{fullname}"
+						th:classappend="${#fields.hasErrors('fullname')}? 'is-invalid'">
+					<div th:if="${#fields.hasErrors('fullname')}" th:errors="*{fullname}"
+						class="invalid-feedback">Message</div>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label th:for="${#ids.next('username')}"
+					class="col-sm-3 col-form-label col-form-label-sm">Tài khoản
+					(<span class="text-danger">*</span>)
+				</label>
+				<div class="col-sm-9">
+					<input class="form-control form-control-sm" th:field="*{username}"
+						th:classappend="${#fields.hasErrors('username')}? 'is-invalid'">
+					<div th:if="${#fields.hasErrors('username')}" th:errors="*{username}"
+						class="invalid-feedback">Message</div>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label th:for="${#ids.next('password')}"
+					class="col-sm-3 col-form-label col-form-label-sm">Mật khẩu
+					<span class="text-danger">*</span>
+				</label>
+				<div class="col-sm-9">
+					<input type="password" class="form-control form-control-sm"
+						th:field="*{password}"
+						th:classappend="${#fields.hasErrors('password')}? 'is-invalid'">
+					<div th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
+						class="invalid-feedback">Message</div>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label th:for="${#ids.next('verifyPassword')}"
+					class="col-sm-3 col-form-label col-form-label-sm">Xác thực
+					mật khẩu (<span class="text-danger">*</span>)
+				</label>
+				<div class="col-sm-9">
+					<input type="password" class="form-control form-control-sm"
+						th:field="*{verifyPassword}"
+						th:classappend="${#fields.hasErrors('verifyPassword')}? 'is-invalid'">
+					<div th:if="${#fields.hasErrors('verifyPassword')}"
+						th:errors="*{verifyPassword}" class="invalid-feedback">Message</div>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label th:for="${#ids.next('email')}"
+					class="col-sm-3 col-form-label col-form-label-sm">Thư điện
+					tử (<span class="text-danger">*</span>)
+				</label>
+				<div class="col-sm-9">
+					<input class="form-control form-control-sm"
+						th:field="*{email}"
+						th:classappend="${#fields.hasErrors('email')}? 'is-invalid'">
+					<div th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
+						class="invalid-feedback">Message</div>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label th:for="${#ids.next('phoneNumber')}"
+					class="col-sm-3 col-form-label col-form-label-sm">Số điện
+					thoại (<span class="text-danger">*</span>)
+				</label>
+				<div class="col-sm-9">
+					<input type="text" class="form-control form-control-sm"
+						th:field="*{phoneNumber}"
+						th:classappend="${#fields.hasErrors('phoneNumber')}? 'is-invalid'">
+					<div th:if="${#fields.hasErrors('phoneNumber')}"
+						th:errors="*{phoneNumber}" class="invalid-feedback">Message</div>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<div class="col-sm-3"></div>
+				<div class="col-sm-9">
+					<button type="submit" class="btn btn-primary">Đăng ký</button>
+					<button type="reset" class="btn btn-secondary">Nhập lại</button>
+				</div>
+			</div>
+
+		</form>
+		
+	</div>
+	
+
+	<!-- script core jQuery, popper, bootstrap -->
+	<script th:src="@{/js/jquery.min.js}"></script>
+	<script th:src="@{/js/popper.min.js}"></script>
+	<script th:src="@{/js/bootstrap.min.js}"></script>
+	
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://wwww.thymeleaf.org" xmlns:layout="">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- font-awesome -->
+<link rel="stylesheet" th:href="@{/css/font-awesome.min.css}" />
+
+<!-- css bootstrap core -->
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+
+<!-- css common -->
+<link rel="stylesheet" th:href="@{/css/common.css}" />
+
+<title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE"
+	th:text="#{layout.admin.title}"></title>
+</head>
+<body>
+
+	<!-- navbar -->
+	<nav th:replace="fragments/navbar :: admin"></nav>
+
+	<!-- content -->
+	<section layout:fragment="content"></section>
+	
+	<div class="pt-5 pb-5"></div>
+
+	<!-- footer -->
+	<footer th:replace="fragments/footer :: footer"> </footer>
+
+	<!-- script core jQuery, popper, bootstrap -->
+	<script th:src="@{/js/jquery.min.js}"></script>
+	<script th:src="@{/js/popper.min.js}"></script>
+	<script th:src="@{/js/bootstrap.min.js}"></script>
+
+	<th:block layout:fragment="script">
+	</th:block>
+
+</body>
+</html>

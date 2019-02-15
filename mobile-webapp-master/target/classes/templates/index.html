@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://wwww.thymeleaf.org" xmlns:layout=""
+	layout:decorate="~{layouts/user-layout}" xmlns:sec>
+<head>
+<title>Trang chủ</title>
+</head>
+<body>
+	<section layout:fragment="content">
+		<div th:replace="~{fragments/carousel :: carousel}"></div>
+
+		<div class="p-3"></div>
+
+		<div class="container">
+
+			<div class="row p-3">
+
+				<div class="col-md-4 pt-3 border">
+					<h2 class="text-success">
+						<i class="fas fa-award"></i> BẢO HÀNH
+					</h2>
+					<p>Sản phẩm được bảo hành chính hãng.</p>
+				</div>
+
+				<div class="col-md-4 pt-3 border">
+					<h2 class="text-danger">
+						<i class="fas fa-truck"></i> GIAO HÀNG
+					</h2>
+					<p>Giao hàng miễn phí trong nội thành với bán kính 10Km.</p>
+				</div>
+
+				<div class="col-md-4 pt-3 border">
+					<h2 class="text-primary">
+						<i class="fas fa-spinner"></i> ĐỔI TRẢ
+					</h2>
+					<p>Đổi trả 1 đổi 1 trong 15 ngày nếu có bất kỳ lỗi xuất phát từ
+						nhà sản xuất.</p>
+				</div>
+
+			</div>
+
+		</div>
+
+		<div class="container mt-4">
+			<nav aria-label="breadcrumb" style="width: 100%">
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a th:href="@{/}">Trang chủ</a></li>
+					<li class="breadcrumb-item active" aria-current="page">Sản
+						phẩm bán chạy</li>
+				</ol>
+			</nav>
+			<div th:replace="~{fragments/topsell :: topsell}"></div>
+		</div>
+
+
+		<div class="container mt-4">
+			<nav aria-label="breadcrumb" style="width: 100%">
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a th:href="@{/}">Trang chủ</a></li>
+					<li class="breadcrumb-item active" aria-current="page">Sản
+						phẩm hot</li>
+				</ol>
+			</nav>
+			<div th:replace="~{fragments/topview :: topview}"></div>
+		</div>
+
+	</section>
+</body>
+</html>
